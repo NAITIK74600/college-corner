@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+import nodemailer from 'nodemailer';
+import pool from '../config/db';
 import {
   createUser,
   findUserByEmail,
@@ -181,6 +184,99 @@ export async function updateProfile(req: Request, res: Response): Promise<void> 
     res.status(500).json({ success: false, message: err.message });
   }
 }
+
+/**
+ * POST /api/auth/forgot-password
+ * Body: { email }
+ * Always returns 200 (prevents email enumeration)
+ */
+export async function forgotPassword(req: Request, res: Response): Promise<void> {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(422).json({ success: false, errors: errors.array() });
+    return;
+  }
+
+  // Always succeed visually — never reveal whether email exists
+  res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
+
+  try {
+    const user = await findUserByEmail(req.body.email);
+    if (!user) return; // silently bail
+
+    // Create token valid for 1 hour
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    const expires  = new Date(Date.now() + 60 * 60 * 1000);
+    await pool.query(
+      `INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3)
+       ON CONFLICT (token) DO NOTHING`,
+      [user.id, rawToken, expires],
+    );
+
+    const frontendUrl = (process.env.FRONTEND_URL || 'http://localhost:3000').split(',')[0].trim();
+    const resetUrl = `${frontendUrl}/reset-password?token=${rawToken}`;
+
+    // Send email (fire-and-forget)
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT) || 587,
+      secure: false,
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+    });
+    await transporter.sendMail({
+      from: `"College Corner" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
+      to: user.email,
+      subject: 'Reset your College Corner password',
+      html: `<p>Hi ${user.name},</p><p>Click below to reset your password (valid 1 hour):</p><p><a href="${resetUrl}">${resetUrl}</a></p><p>If you didn't request this, ignore this email.</p>`,
+    });
+  } catch (err: any) {
+    console.error('[FORGOT-PASSWORD]', err.message);
+  }
+}
+
+/**
+ * POST /api/auth/reset-password
+ * Body: { token, newPassword }
+ */
+export async function resetPassword(req: Request, res: Response): Promise<void> {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(422).json({ success: false, errors: errors.array() });
+    return;
+  }
+  try {
+    const { token, newPassword } = req.body;
+    const result = await pool.query(
+      `SELECT * FROM password_reset_tokens WHERE token = $1 AND used = FALSE AND expires_at > NOW()`,
+      [token],
+    );
+    if (result.rows.length === 0) {
+      res.status(400).json({ success: false, message: 'Invalid or expired reset link. Please request a new one.' });
+      return;
+    }
+    const resetToken = result.rows[0];
+    // Hash new password and update user
+    const bcrypt = await import('bcryptjs');
+    const hashed = await bcrypt.hash(newPassword, 12);
+    await pool.query(`UPDATE users SET password = $1, updated_at = NOW() WHERE id = $2`, [hashed, resetToken.user_id]);
+    await pool.query(`UPDATE password_reset_tokens SET used = TRUE WHERE id = $1`, [resetToken.id]);
+    res.json({ success: true, message: 'Password reset successful. You can now log in.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+}
+
+export const forgotPasswordValidation = [
+  body('email').isEmail().normalizeEmail().withMessage('A valid email is required.'),
+];
+
+export const resetPasswordValidation = [
+  body('token').notEmpty().withMessage('Reset token is required.'),
+  body('newPassword')
+    .isLength({ min: 8 }).withMessage('Password must be at least 8 characters.')
+    .matches(/[A-Z]/).withMessage('Must contain at least one uppercase letter.')
+    .matches(/[0-9]/).withMessage('Must contain at least one number.'),
+];
 
 /**
  * PATCH /api/auth/password  (protected)
