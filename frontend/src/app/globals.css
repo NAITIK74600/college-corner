@@ -1,0 +1,295 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════
+   COLLEGE CORNER — PETAL FUSION DESIGN SYSTEM v2
+   "Fluid Academic Modern" — indigo × coral × mint
+═══════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Backgrounds ────────────────────────────────────────── */
+  --bg:              #ffffff;
+  --bg-warm:         #fafaf8;
+  --bg-cream:        #fffef7;
+  --surface:         #ffffff;
+  --surface-2:       #f9fafb;
+  --surface-3:       #f3f4f6;
+  --surface-dark:    #0d0d14;
+  --surface-dark-2:  #13131f;
+
+  /* ── Text ───────────────────────────────────────────────── */
+  --text-pri:    #111111;
+  --text-sec:    #4b4b5a;
+  --text-muted:  #9ca3af;
+  --text-invert: #ffffff;
+
+  /* ── Brand: Indigo / Electric Blue ─────────────────────── */
+  --indigo:       #4F46E5;
+  --indigo-light: #6366f1;
+  --indigo-deep:  #3730a3;
+  --violet:       #7c3aed;
+
+  /* ── Accent: Petal / Coral / Peach ─────────────────────── */
+  --coral:       #FF7F7F;
+  --coral-light: #FFB5B5;
+  --coral-deep:  #E05555;
+  --peach:       #FFCBA4;
+  --peach-deep:  #F59A5F;
+
+  /* ── Secondary: Mint / Teal ─────────────────────────────── */
+  --mint:       #98FF98;
+  --mint-deep:  #34d058;
+  --teal:       #2dd4bf;
+  --teal-deep:  #0d9488;
+
+  /* ── Gradients ──────────────────────────────────────────── */
+  --gradient-brand:  linear-gradient(135deg, #4F46E5 0%, #7c3aed 60%, #FF7F7F 100%);
+  --gradient-cta:    linear-gradient(135deg, #FF7F7F 0%, #FFCBA4 100%);
+  --gradient-subtle: linear-gradient(135deg, rgba(79,70,229,0.08) 0%, rgba(255,127,127,0.06) 100%);
+  --gradient-hero:
+    radial-gradient(ellipse 80% 60% at 65% -15%, rgba(79,70,229,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 0%  60%,  rgba(255,127,127,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 100% 80%, rgba(152,255,152,0.08) 0%, transparent 50%);
+  --gradient-mesh:
+    radial-gradient(at 40% 20%, rgba(124,58,237,0.10) 0px, transparent 50%),
+    radial-gradient(at 80%  0%, rgba(79,70,229,0.08)  0px, transparent 50%),
+    radial-gradient(at  0% 50%, rgba(255,127,127,0.07) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(152,255,152,0.06) 0px, transparent 50%);
+
+  /* ── Glows ──────────────────────────────────────────────── */
+  --glow-indigo: 0 0 0 3px rgba(79,70,229,0.18);
+  --glow-brand:  0 8px 32px rgba(79,70,229,0.28);
+  --glow-coral:  0 8px 32px rgba(255,127,127,0.34);
+
+  /* ── Borders ────────────────────────────────────────────── */
+  --border:        rgba(0,0,0,0.07);
+  --border-strong: rgba(0,0,0,0.13);
+  --border-focus:  rgba(79,70,229,0.5);
+  --border-brand:  rgba(99,102,241,0.28);
+  --border-petal:  rgba(255,127,127,0.3);
+
+  /* ── Shadows ────────────────────────────────────────────── */
+  --shadow-xs:    0 1px 3px rgba(0,0,0,0.05);
+  --shadow-sm:    0 2px 10px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md:    0 6px 24px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-lg:    0 16px 48px rgba(0,0,0,0.09), 0 4px 16px rgba(0,0,0,0.05);
+  --shadow-xl:    0 32px 80px rgba(0,0,0,0.11), 0 8px 24px rgba(0,0,0,0.07);
+  --shadow-brand: 0 8px 40px rgba(79,70,229,0.28), 0 2px 12px rgba(79,70,229,0.18);
+  --shadow-coral: 0 8px 40px rgba(255,127,127,0.30), 0 2px 12px rgba(255,127,127,0.18);
+
+  /* ── Radius ─────────────────────────────────────────────── */
+  --r-xs:   6px;
+  --r-sm:   10px;
+  --r-md:   16px;
+  --r-lg:   24px;
+  --r-xl:   32px;
+  --r-2xl:  40px;
+  --r-pill: 9999px;
+
+  /* ── Typography ─────────────────────────────────────────── */
+  --font-heading: var(--font-urbanist), 'Poppins', 'Segoe UI', system-ui, sans-serif;
+  --font-body:    var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    var(--font-geist-mono), 'Fira Code', monospace;
+
+  /* ── Easing ─────────────────────────────────────────────── */
+  --ease:        cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out:    cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-fast:      0.15s;
+  --t-base:      0.22s;
+  --t-slow:      0.4s;
+
+  /* ── Z-index ────────────────────────────────────────────── */
+  --z-below:  -1;
+  --z-base:    1;
+  --z-raised: 10;
+  --z-nav:   1000;
+  --z-modal: 2000;
+  --z-toast: 3000;
+}
+
+/* ── Tailwind theme bridge ─────────────────────────────────── */
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text-pri);
+  --font-sans:        var(--font-urbanist);
+  --font-mono:        var(--font-geist-mono);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE RESET
+═══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-pri);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* ── Typography ─────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family:    var(--font-heading);
+  font-weight:    900;
+  letter-spacing: -0.035em;
+  line-height:    1.08;
+  color:          var(--text-pri);
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar         { width: 5px; height: 5px; }
+::-webkit-scrollbar-track   { background: transparent; }
+::-webkit-scrollbar-thumb   { background: var(--border-strong); border-radius: var(--r-pill); }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ── Focus ──────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--indigo);
+  outline-offset: 3px;
+  border-radius: var(--r-xs);
+}
+
+/* ── Selection ──────────────────────────────────────────────── */
+::selection {
+  background: rgba(79,70,229,0.15);
+  color: var(--indigo);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITY CLASSES
+═══════════════════════════════════════════════════════════ */
+
+/* Gradient text — brand */
+.text-gradient {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient text — coral/peach CTA style */
+.text-gradient-coral {
+  background: linear-gradient(135deg, #FF7F7F, #FFCBA4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass surfaces */
+.glass {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+.glass-frosted {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.65);
+}
+.glass-dark {
+  background: rgba(13,13,20,0.84);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Organic petal blobs */
+.blob   { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+.blob-2 { border-radius: 40% 60% 70% 30% / 40% 70% 30% 60%; }
+.blob-3 { border-radius: 30% 70% 40% 60% / 50% 40% 60% 50%; }
+
+/* Animated gradient border */
+.gradient-border {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--r-lg);
+}
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  background: var(--gradient-brand);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease);
+}
+.gradient-border:hover::before { opacity: 1; }
+
+/* Shimmer skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-3) 25%, var(--surface-2) 50%, var(--surface-3) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+  border-radius: var(--r-sm);
+}
+
+/* Upload zone pulsating dashed border */
+.pulse-border {
+  animation: pulse-dash 2.5s ease-in-out infinite;
+}
+
+/* Floating animation helper */
+.float      { animation: float      8s ease-in-out infinite; }
+.float-slow { animation: float-slow 11s ease-in-out infinite; }
+
+/* ═══════════════════════════════════════════════════════════
+   KEYFRAMES
+═══════════════════════════════════════════════════════════ */
+
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-20px) rotate(4deg); }
+  66%       { transform: translateY(-10px) rotate(-3deg); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px)   rotate(0deg)   scale(1); }
+  50%       { transform: translateY(-28px) rotate(6deg)   scale(1.04); }
+}
+
+/* Pulsating dashed border — used on upload zone */
+@keyframes pulse-dash {
+  0%, 100% {
+    border-color: rgba(79,70,229,0.4);
+    box-shadow: 0 0 0 0 rgba(255,127,127,0);
+  }
+  50% {
+    border-color: rgba(255,127,127,0.65);
+    box-shadow: 0 0 0 8px rgba(255,127,127,0.06);
+  }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration:       0.01ms !important;
+    animation-iteration-count: 1     !important;
+    transition-duration:      0.01ms !important;
+  }
+}
