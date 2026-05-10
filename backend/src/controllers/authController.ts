@@ -53,12 +53,13 @@ function setCookieAndRespond(
   user: object,
   statusCode = 200
 ): void {
+  const isProd = process.env.NODE_ENV === 'production';
   res
     .status(statusCode)
     .cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: isProd,
+      sameSite: isProd ? 'none' : 'lax', // 'none' required for cross-domain (Vercel + Render)
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
     })
     .json({ success: true, user });
@@ -127,8 +128,9 @@ export async function login(req: Request, res: Response): Promise<void> {
  * POST /api/auth/logout
  */
 export function logout(_req: Request, res: Response): void {
+  const isProd = process.env.NODE_ENV === 'production';
   res
-    .clearCookie('token', { httpOnly: true, sameSite: 'lax' })
+    .clearCookie('token', { httpOnly: true, secure: isProd, sameSite: isProd ? 'none' : 'lax' })
     .json({ success: true, message: 'Logged out successfully.' });
 }
 
@@ -193,8 +195,9 @@ export async function changePassword(req: Request, res: Response): Promise<void>
   try {
     await changeUserPassword(req.user!.userId, req.body.currentPassword, req.body.newPassword);
     // Clear session so user must log in with the new password
+    const isProd = process.env.NODE_ENV === 'production';
     res
-      .clearCookie('token', { httpOnly: true, sameSite: 'lax' })
+      .clearCookie('token', { httpOnly: true, secure: isProd, sameSite: isProd ? 'none' : 'lax' })
       .json({ success: true, message: 'Password updated. Please log in again.' });
   } catch (err: any) {
     if (err.code === 'WRONG_PASSWORD') {
