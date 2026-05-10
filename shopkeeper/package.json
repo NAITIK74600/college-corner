@@ -1,0 +1,32 @@
+{
+  "name": "college-corner-shopkeeper",
+  "version": "1.0.0",
+  "description": "College Corner – Shopkeeper / Print Station launcher",
+  "main": "launcher.js",
+  "scripts": {
+    "start": "node launcher.js",
+    "install-startup": "node install-startup.js",
+    "uninstall-startup": "node install-startup.js --uninstall",
+    "build-exe": "pkg launcher.js --targets node18-win-x64 --output dist/CollegeCornerShopkeeper.exe --compress GZip"
+  },
+  "bin": {
+    "cc-shopkeeper": "launcher.js"
+  },
+  "pkg": {
+    "assets": [
+      "../backend/dist/**",
+      "../backend/uploads/**",
+      "../frontend/.next/standalone/**",
+      "../frontend/.next/static/**",
+      "../frontend/public/**"
+    ],
+    "targets": ["node18-win-x64"],
+    "outputPath": "dist"
+  },
+  "dependencies": {
+    "open": "^10.1.0"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
+  }
+}

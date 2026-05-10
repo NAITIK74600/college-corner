@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.local
+.next/
+dist/
+*.log
+uploads/
+
+# Shopkeeper build artifacts
+shopkeeper/deploy-package/
+shopkeeper/*.zip
+shopkeeper/CollegeCornerShopkeeper-*.zip

@@ -1,0 +1,23 @@
+{
+  "name": "college-corner-print-client",
+  "version": "1.0.0",
+  "description": "Local shopkeeper PC daemon — polls CC backend, prints documents, updates job status.",
+  "main": "dist/client.js",
+  "scripts": {
+    "dev":   "ts-node src/client.ts",
+    "build": "tsc",
+    "start": "node dist/client.js"
+  },
+  "dependencies": {
+    "axios":          "^1.7.0",
+    "dotenv":         "^16.4.0",
+    "pdf-to-printer": "^1.2.0",
+    "pdfkit":         "^0.15.0"
+  },
+  "devDependencies": {
+    "@types/node":   "^20.0.0",
+    "@types/pdfkit": "^0.13.0",
+    "ts-node":       "^10.9.0",
+    "typescript":    "^5.4.0"
+  }
+}
