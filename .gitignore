@@ -6,6 +6,9 @@ dist/
 *.log
 uploads/
 
+# Markdown docs (internal only)
+*.md
+
 # Shopkeeper build artifacts
 shopkeeper/deploy-package/
 shopkeeper/*.zip
